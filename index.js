@@ -18,6 +18,7 @@ connection.query("show tables", function(error, rows, fields) {
   let tables = toJSON(rows);
   tables.forEach(table => {
     const tableName = table["Tables_in_" + configuration.database];
+    parseTableStructure(tableName);
     parseTableData(tableName);
   });
   connection.end();
@@ -31,6 +32,15 @@ function parseTableData(tableName) {
     if (error) throw error;
     let tableData = toJSON(rows);
     wirteToFile(`backup/${tableName}.data.json`, tableData);
+  });
+}
+function parseTableStructure(tableName) {
+  let query = `describe  ${configuration.database}.${tableName} ;`;
+  connection.query(query, function(error, rows, fields) {
+    if (error) throw error;
+
+    let tableStructure = toJSON(rows);
+    wirteToFile(`backup/${tableName}.structure.json`, tableStructure);
   });
 }
 function wirteToFile(fileName, data) {
