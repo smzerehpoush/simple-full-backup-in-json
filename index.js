@@ -7,7 +7,11 @@ const configuration = {
   database: "your_database_name"
 };
 let connection = mysql.createConnection(configuration);
-fs.mkdirSync("backup");
+fs.mkdir("db-backup", error => {
+  if (error.errno !== -17) {
+    throw error;
+  }
+});
 connection.connect();
 connection.query("show tables", function(error, rows, fields) {
   if (error) throw error;
