@@ -33,3 +33,9 @@ function parseTableData(tableName) {
     wirteToFile(`backup/${tableName}.data.json`, tableData);
   });
 }
+function wirteToFile(fileName, data) {
+  fs.writeFile(fileName, JSON.stringify(data), err => {
+    if (err) throw err;
+    return;
+  });
+}
