@@ -22,7 +22,7 @@ connection.query("show tables", function(error, rows, fields) {
     connection.query(query, function(error, rows, fields) {
       if (error) throw error;
       let tableData = toJSON(rows);
-      wirteToFile(`backup/${tableName}.json`, tableData);
+      wirteToFile(`backup/${tableName}.data.json`, tableData);
     });
   });
   connection.end();
