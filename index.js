@@ -1,10 +1,10 @@
 const mysql = require("mysql");
 const fs = require("fs");
 const configuration = {
-  host: "your_host",
-  user: "your_username",
-  password: "your_db_password",
-  database: "your_database_name"
+  host: "localhost",
+  user: "mahdiyar",
+  password: "13@sMz&77",
+  database: "mahdiyardb"
 };
 let connection = mysql.createConnection(configuration);
 fs.mkdir("db-backup", error => {
@@ -22,7 +22,7 @@ connection.query("show tables", function(error, rows, fields) {
     connection.query(query, function(error, rows, fields) {
       if (error) throw error;
       let tableData = toJSON(rows);
-      wirteToFile(`backup/${tableName}.json`, tableData);
+      wirteToFile(`backup/${tableName}.data.json`, tableData);
     });
   });
   connection.end();
