@@ -11,12 +11,18 @@
     "url": "git+https://github.com/smzerehpoush/simple-full-backup-in-json.git"
   },
   "keywords": [
-    "json"
+    "json",
+    "mysql",
+    "back-up",
+    "backup"
   ],
   "author": "Seyyed Mahdiyar Zerehpoush",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/smzerehpoush/simple-full-backup-in-json/issues"
   },
-  "homepage": "https://github.com/smzerehpoush/simple-full-backup-in-json#readme"
+  "homepage": "https://github.com/smzerehpoush/simple-full-backup-in-json#readme",
+  "dependencies": {
+    "mysql": "^2.16.0"
+  }
 }
