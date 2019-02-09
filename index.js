@@ -1,10 +1,10 @@
 const mysql = require("mysql");
 const fs = require("fs");
 const configuration = {
-  host: "localhost",
-  user: "mahdiyar",
-  password: "13@sMz&77",
-  database: "mahdiyardb"
+  host: "",
+  user: "",
+  password: "",
+  database: ""
 };
 let connection = mysql.createConnection(configuration);
 fs.mkdir("db-backup", error => {
