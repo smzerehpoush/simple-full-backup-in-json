@@ -27,22 +27,6 @@ connection.query("show tables", function(error, rows, fields) {
   });
   connection.end();
 });
-function wirteToFile(fileName, data) {
-  fs.writeFile(fileName, JSON.stringify(data), err => {
-    if (err) throw err;
-    return;
-  });
-}
 function toJSON(rows) {
   return Object.values(JSON.parse(JSON.stringify(rows)));
-}
-function saveUsers() {
-  let users = Object.values(JSON.parse(JSON.stringify(rows)));
-  file.write("[");
-  for (user of users) {
-    console.log(user);
-    file.write(JSON.stringify(user));
-    file.write(",");
-  }
-  file.write("]");
 }
