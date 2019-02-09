@@ -4,7 +4,7 @@
   "description": "simple script  that creates a full back-up of your mysql database in json format",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
