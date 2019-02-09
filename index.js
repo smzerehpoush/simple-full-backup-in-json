@@ -18,15 +18,18 @@ connection.query("show tables", function(error, rows, fields) {
   let tables = toJSON(rows);
   tables.forEach(table => {
     const tableName = table["Tables_in_" + configuration.database];
-    let query = `select * from  ${configuration.database}.${tableName} ;`;
-    connection.query(query, function(error, rows, fields) {
-      if (error) throw error;
-      let tableData = toJSON(rows);
-      wirteToFile(`backup/${tableName}.data.json`, tableData);
-    });
+    parseTableData(tableName);
   });
   connection.end();
 });
 function toJSON(rows) {
   return Object.values(JSON.parse(JSON.stringify(rows)));
+}
+function parseTableData(tableName) {
+  let query = `select * from  ${configuration.database}.${tableName} ;`;
+  connection.query(query, function(error, rows, fields) {
+    if (error) throw error;
+    let tableData = toJSON(rows);
+    wirteToFile(`backup/${tableName}.data.json`, tableData);
+  });
 }
