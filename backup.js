@@ -63,7 +63,7 @@ function parseArgs() {
 }
 function createFile() {
   fs.mkdir(configuration.directory, error => {
-    if (error.errno !== -17) {
+    if (error["errno"] !== -17) {
       throw error;
     }
   });
