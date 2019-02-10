@@ -2,7 +2,7 @@ const mysql = require("mysql");
 const fs = require("fs");
 const readline = require("readline");
 
-const configuration = { directory: "db-backup", password: "13@sMz&77" };
+const configuration = { directory: "db-backup", password: "lizbazi" };
 backup();
 function backup() {
   // const rl = readline.createInterface({
