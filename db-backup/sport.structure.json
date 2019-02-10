@@ -1,0 +1,1 @@
+[{"Field":"id","Type":"varchar(40)","Null":"NO","Key":"PRI","Default":null,"Extra":""},{"Field":"creation_date","Type":"datetime","Null":"YES","Key":"","Default":null,"Extra":""},{"Field":"name","Type":"varchar(255)","Null":"YES","Key":"UNI","Default":null,"Extra":""},{"Field":"order_number","Type":"int(11)","Null":"YES","Key":"","Default":null,"Extra":""}]
