@@ -1,1 +1,0 @@
-[{"Field":"id","Type":"varchar(40)","Null":"NO","Key":"PRI","Default":null,"Extra":""},{"Field":"creation_date","Type":"datetime","Null":"YES","Key":"","Default":null,"Extra":""},{"Field":"auth_user_id","Type":"varchar(40)","Null":"NO","Key":"MUL","Default":null,"Extra":""},{"Field":"photo_media_id","Type":"varchar(40)","Null":"NO","Key":"MUL","Default":null,"Extra":""}]
