@@ -1,51 +1,18 @@
 const fs = require("fs");
 const mysql = require("mysql");
 const configuration = { directory: "db-backup", password: "13@sMz&77" };
-
-function getArgs() {
-  const args = {};
-  for (let i = 2; i < process.argv.length - 1; i++) {
-    const arg = process.argv[i];
-    const next = process.argv[i + 1];
-    const argValue = arg.slice(arg.lastIndexOf("-") + 1, arg.length);
-    if (arg.startsWith("-")) {
-      if (next.startsWith("-")) args[argValue] = true;
-      else args[argValue] = next;
-      i++;
-    }
-  }
-  return args;
-}
-function parseArgs() {
-  const args = getArgs();
-  Object.keys(args).forEach(arg => {
-    switch (arg) {
-      case "u":
-        configuration.user = args[arg];
-        break;
-      case "h":
-        configuration.host = args[arg];
-        break;
-      case "d":
-        configuration.database = args[arg];
-        break;
-      default:
-        break;
-    }
-  });
-}
+import { parseArgs } from "./helper";
+const basePath = `./${configuration.directory}`;
 parseArgs();
 let connection = mysql.createConnection(configuration);
 connection.connect();
 
-fs.readdir("./" + configuration.directory, (err, files) => {
+fs.readdir(basePath, (err, files) => {
   if (err) throw err;
   files.forEach(file => {
     // console.log(file);
     if (file.endsWith(".data.json")) {
-      let rawData = fs.readFileSync(
-        "./" + configuration.directory + "/" + file
-      );
+      let rawData = fs.readFileSync(basePath + "/" + file);
       let data = JSON.parse(rawData);
       let query = `INSERT INTO \`${configuration.database}\`.\`${file.slice(
         0,
