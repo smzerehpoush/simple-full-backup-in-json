@@ -1,6 +1,6 @@
 const mysql = require("mysql");
 const fs = require("fs");
-const readline = require("readline");
+import { parseArgs } from "./helper";
 
 const configuration = { directory: "db-backup", password: "13@sMz&77" };
 backup();
@@ -29,38 +29,7 @@ function backup() {
     connection.end();
   });
 }
-function getArgs() {
-  const args = {};
-  for (let i = 2; i < process.argv.length - 1; i++) {
-    const arg = process.argv[i];
-    const next = process.argv[i + 1];
-    const argValue = arg.slice(arg.lastIndexOf("-") + 1, arg.length);
-    if (arg.startsWith("-")) {
-      if (next.startsWith("-")) args[argValue] = true;
-      else args[argValue] = next;
-      i++;
-    }
-  }
-  return args;
-}
-function parseArgs() {
-  const args = getArgs();
-  Object.keys(args).forEach(arg => {
-    switch (arg) {
-      case "u":
-        configuration.user = args[arg];
-        break;
-      case "h":
-        configuration.host = args[arg];
-        break;
-      case "d":
-        configuration.database = args[arg];
-        break;
-      default:
-        break;
-    }
-  });
-}
+
 function createFile() {
   fs.mkdir(configuration.directory, error => {
     if (error["errno"] !== -17) {
