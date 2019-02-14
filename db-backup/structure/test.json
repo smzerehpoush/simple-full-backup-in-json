@@ -1,0 +1,1 @@
+[{"Field":"id","Type":"int(11)","Null":"NO","Key":"","Default":null,"Extra":""},{"Field":"zahr","Type":"varchar(45)","Null":"YES","Key":"","Default":null,"Extra":""},{"Field":"timw","Type":"datetime","Null":"YES","Key":"","Default":null,"Extra":""}]
