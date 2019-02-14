@@ -1,8 +1,8 @@
+const parseArgs = require("./helper");
 const mysql = require("mysql");
 const fs = require("fs");
-import { parseArgs } from "./helper";
+const configuration = parseArgs();
 
-const configuration = { directory: "db-backup", password: "13@sMz&77" };
 backup();
 function backup() {
   // const rl = readline.createInterface({
@@ -14,7 +14,6 @@ function backup() {
   //   r1.close();
   // });
   // // configuration.password = password;
-  parseArgs();
   createFile();
   let connection = mysql.createConnection(configuration);
   connection.connect();
