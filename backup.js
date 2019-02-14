@@ -1,24 +1,28 @@
+const parseArgs = require("./helper");
 const mysql = require("mysql");
 const fs = require("fs");
-const readline = require("readline");
+const configuration = parseArgs();
+const readline = require('readline')
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+start();
 
-const configuration = { directory: "db-backup", password: "lizbazi" };
-backup();
+function start() {
+  rl.question("Enter Password : \n", answer => {
+    configuration.password = answer;
+    rl.close();
+    createFile();
+
+  });
+
+}
+
 function backup() {
-  // const rl = readline.createInterface({
-  //   input: process.stdin,
-  //   output: process.stdout
-  // });
-  // rl.question("Enter Password : \n", answer => {
-  //   configuration.password = answer;
-  //   r1.close();
-  // });
-  // // configuration.password = password;
-  parseArgs();
-  createFile();
   let connection = mysql.createConnection(configuration);
   connection.connect();
-  connection.query("show tables", function(error, rows, fields) {
+  connection.query("SHOW TABLES ", function (error, rows, fields) {
     if (error) throw error;
     let tables = toJSON(rows);
     tables.forEach(table => {
@@ -28,69 +32,47 @@ function backup() {
     });
     connection.end();
   });
+
 }
-function getArgs() {
-  const args = {};
-  for (let i = 2; i < process.argv.length - 1; i++) {
-    const arg = process.argv[i];
-    const next = process.argv[i + 1];
-    const argValue = arg.slice(arg.lastIndexOf("-") + 1, arg.length);
-    if (arg.startsWith("-")) {
-      if (next.startsWith("-")) args[argValue] = true;
-      else args[argValue] = next;
-      i++;
-    }
-  }
-  return args;
-}
-function parseArgs() {
-  const args = getArgs();
-  Object.keys(args).forEach(arg => {
-    switch (arg) {
-      case "u":
-        configuration.user = args[arg];
-        break;
-      case "h":
-        configuration.host = args[arg];
-        break;
-      case "d":
-        configuration.database = args[arg];
-        break;
-      default:
-        break;
-    }
-  });
-}
+
 function createFile() {
-  fs.mkdir(configuration.directory, error => {
-    if (error["errno"] !== -17) {
-      throw error;
-    }
-  });
+  const mainPath = `./${configuration.mainDirectory}`
+  const dataPath = `./${configuration.mainDirectory}/data`
+  const structurePath = `./${configuration.mainDirectory}/structure`
+  if (!fs.existsSync(mainPath))
+    fs.mkdirSync(mainPath)
+  if (!fs.existsSync(dataPath))
+    fs.mkdirSync(dataPath)
+  if (!fs.existsSync(structurePath))
+    fs.mkdirSync(structurePath)
+  backup();
 }
+
 function toJSON(rows) {
   return Object.values(JSON.parse(JSON.stringify(rows)));
 }
+
 function parseTableData(connection, tableName) {
-  let query = `select * from  ${configuration.database}.${tableName} ;`;
-  connection.query(query, function(error, rows, fields) {
+  let query = `SELECT * FROM  \`${configuration.database}\`.\`${tableName}\` ;`;
+  connection.query(query, function (error, rows, fields) {
     if (error) throw error;
     let tableData = toJSON(rows);
-    wirteToFile(`${configuration.directory}/${tableName}.data.json`, tableData);
+    wirteToFile(`${configuration.mainDirectory}/data/${tableName}.json`, tableData);
   });
 }
-function parseTableStructure(connection, tableName) {
-  let query = `describe  ${configuration.database}.${tableName} ;`;
-  connection.query(query, function(error, rows, fields) {
-    if (error) throw error;
 
+function parseTableStructure(connection, tableName) {
+  let query = `DESCRIBE  ${configuration.database}.${tableName} ;`;
+  connection.query(query, function (error, rows, fields) {
+    if (error) throw error;
     let tableStructure = toJSON(rows);
     wirteToFile(
-      `${configuration.directory}/${tableName}.structure.json`,
+      `${configuration.mainDirectory}/structure/${tableName}.json`,
       tableStructure
     );
   });
 }
+
 function wirteToFile(fileName, data) {
   fs.writeFile(fileName, JSON.stringify(data), err => {
     if (err) throw err;
