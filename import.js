@@ -42,7 +42,7 @@ fs.readdir(basePath, (err, files) => {
         query2 = query2.slice(0, -1);
         query2 += `) ;`;
         console.log(query2);
-        connection.query(query2, function(error, rows, fields) {
+        connection.query(query2, function (error, rows, fields) {
           if (error) throw error;
           console.log(rows);
         });
