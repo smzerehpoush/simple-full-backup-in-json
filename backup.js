@@ -7,19 +7,19 @@ const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
+start();
 
-backup();
+function start() {
+  rl.question("Enter Password : \n", answer => {
+    configuration.password = answer;
+    rl.close();
+    createFile();
+
+  });
+
+}
+
 function backup() {
-  // const rl = readline.createInterface({
-  //   input: process.stdin,
-  //   output: process.stdout
-  // });
-  // rl.question("Enter Password : \n", answer => {
-  //   configuration.password = answer;
-  //   r1.close();
-  // });
-  // // configuration.password = password;
-  createFile();
   let connection = mysql.createConnection(configuration);
   connection.connect();
   connection.query("show tables", function(error, rows, fields) {
