@@ -3,30 +3,31 @@ const readline = require("readline");
 const fs = require("fs");
 const mysql = require("mysql");
 const configuration = helper();
-const basePath = `./${configuration.mainDirectory}`;
+const basePath = `./${configuration.mainDirectory}/`;
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
-rl.question("Enter Password : \n", answer => {
+rl.question("Enter Database Password : \n", answer => {
   configuration.password = answer;
-  r1.close();
+  rl.close();
+  insertToDB()
 });
 // configuration.password = password;
-
-let connection = mysql.createConnection(configuration);
-connection.connect();
-fs.readdir(basePath, (err, files) => {
-  if (err) throw err;
+function insertToDB() {
+  let connection = mysql.createConnection(configuration);
+  const files = fs.readdirSync(`${basePath}/data`)
+  connection.connect();
   files.forEach(file => {
-    if (file.endsWith(".data.json")) {
-      let rawData = fs.readFileSync(basePath + "/" + file);
+    console.log(file);
+    if (file.endsWith(".json")) {
+      console.log(file)
+      let rawData = fs.readFileSync(`${basePath}/data/${file}`);
       let jsonObject = JSON.parse(rawData);
-      if (!file.endsWith(".data.json")) return;
       let query = `INSERT INTO \`${configuration.database}\`.\`${file.slice(
-        0,
-        file.indexOf(".data.json")
-      )}\` (`;
+          0,
+          file.indexOf(".json")
+        )}\` (`;
       const colmuns = [];
       if (jsonObject.length > 1)
         Object.keys(jsonObject[0]).forEach(col => colmuns.push(col));
@@ -49,4 +50,5 @@ fs.readdir(basePath, (err, files) => {
       });
     }
   });
-});
+  connection.end()
+}
