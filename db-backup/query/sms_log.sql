@@ -1,0 +1,1 @@
+CREATE TABLE `lizbazi`.`sms_log`

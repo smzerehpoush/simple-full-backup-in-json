@@ -1,0 +1,1 @@
+CREATE TABLE `lizbazi`.`activation_code`

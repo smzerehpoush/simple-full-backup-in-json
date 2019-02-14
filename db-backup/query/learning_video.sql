@@ -1,0 +1,1 @@
+CREATE TABLE `lizbazi`.`learning_video`
