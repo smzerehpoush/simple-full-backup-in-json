@@ -38,7 +38,10 @@ function insertToDB() {
       jsonObject.forEach(item => {
         let query2 = query;
         colmuns.forEach(col => {
-          query2 += `'${item[col]}' ,`;
+          let d = item[col]
+          if (col.includes("_date") && item[col].length === 24) {
+            query2 += `'${d.slice(0,10)} ${d.slice(11,19)}' ,`;
+          } else query2 += `'${d}' ,`;
         });
         query2 = query2.slice(0, -1);
         query2 += `) ;`;
