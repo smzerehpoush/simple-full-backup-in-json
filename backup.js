@@ -22,7 +22,7 @@ function start() {
 function backup() {
   let connection = mysql.createConnection(configuration);
   connection.connect();
-  connection.query("show tables", function(error, rows, fields) {
+  connection.query("SHOW TABLES ", function (error, rows, fields) {
     if (error) throw error;
     let tables = toJSON(rows);
     tables.forEach(table => {
@@ -32,38 +32,47 @@ function backup() {
     });
     connection.end();
   });
+
 }
 
 function createFile() {
-  fs.mkdir(configuration.directory, error => {
-    if (error["errno"] !== -17) {
-      throw error;
-    }
-  });
+  const mainPath = `./${configuration.mainDirectory}`
+  const dataPath = `./${configuration.mainDirectory}/data`
+  const structurePath = `./${configuration.mainDirectory}/structure`
+  if (!fs.existsSync(mainPath))
+    fs.mkdirSync(mainPath)
+  if (!fs.existsSync(dataPath))
+    fs.mkdirSync(dataPath)
+  if (!fs.existsSync(structurePath))
+    fs.mkdirSync(structurePath)
+  backup();
 }
+
 function toJSON(rows) {
   return Object.values(JSON.parse(JSON.stringify(rows)));
 }
+
 function parseTableData(connection, tableName) {
-  let query = `select * from  ${configuration.database}.${tableName} ;`;
-  connection.query(query, function(error, rows, fields) {
+  let query = `SELECT * FROM  \`${configuration.database}\`.\`${tableName}\` ;`;
+  connection.query(query, function (error, rows, fields) {
     if (error) throw error;
     let tableData = toJSON(rows);
-    wirteToFile(`${configuration.directory}/${tableName}.data.json`, tableData);
+    wirteToFile(`${configuration.mainDirectory}/data/${tableName}.json`, tableData);
   });
 }
-function parseTableStructure(connection, tableName) {
-  let query = `describe  ${configuration.database}.${tableName} ;`;
-  connection.query(query, function(error, rows, fields) {
-    if (error) throw error;
 
+function parseTableStructure(connection, tableName) {
+  let query = `DESCRIBE  ${configuration.database}.${tableName} ;`;
+  connection.query(query, function (error, rows, fields) {
+    if (error) throw error;
     let tableStructure = toJSON(rows);
     wirteToFile(
-      `${configuration.directory}/${tableName}.structure.json`,
+      `${configuration.mainDirectory}/structure/${tableName}.json`,
       tableStructure
     );
   });
 }
+
 function wirteToFile(fileName, data) {
   fs.writeFile(fileName, JSON.stringify(data), err => {
     if (err) throw err;
