@@ -2,6 +2,11 @@ const parseArgs = require("./helper");
 const mysql = require("mysql");
 const fs = require("fs");
 const configuration = parseArgs();
+const readline = require('readline')
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
 
 backup();
 function backup() {
