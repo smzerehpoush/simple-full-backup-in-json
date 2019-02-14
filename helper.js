@@ -1,4 +1,7 @@
-const configuration = { directory: "db-backup", password: "lizbazi" };
+const configuration = {
+  mainDirectory: "db-backup"
+};
+
 function getArgs() {
   const args = {};
   for (let i = 2; i < process.argv.length - 1; i++) {
@@ -13,6 +16,7 @@ function getArgs() {
   }
   return args;
 }
+
 function parseArgs() {
   const args = getArgs();
   Object.keys(args).forEach(arg => {

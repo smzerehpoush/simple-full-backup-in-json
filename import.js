@@ -3,7 +3,7 @@ const readline = require("readline");
 const fs = require("fs");
 const mysql = require("mysql");
 const configuration = helper();
-const basePath = `./${configuration.directory}`;
+const basePath = `./${configuration.mainDirectory}`;
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
