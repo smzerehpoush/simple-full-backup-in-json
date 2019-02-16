@@ -1,0 +1,1 @@
+[{"Field":"resort_id","Type":"varchar(40)","Null":"NO","Key":"MUL","Default":null,"Extra":""},{"Field":"photo_media_id","Type":"varchar(40)","Null":"NO","Key":"MUL","Default":null,"Extra":""}]
