@@ -37,9 +37,10 @@ function insertToDB() {
         let query2 = query;
         colmuns.forEach(col => {
           let d = item[col];
+
           if (col.includes("_date")) {
             if (item[col] && item[col].length === 24)
-              query2 += `'${d.slice(0, 10)} ${d.slice(11, 19)}' ,`;
+              query2 += `\'${d.slice(0, 10)} ${d.slice(11, 19)}\' ,`;
             else {
               // console.log(query2);
               query2 = `${query2.slice(
