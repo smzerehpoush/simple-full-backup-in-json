@@ -22,11 +22,33 @@ function formatString(mystring) {
 // configuration.password = password;
 function insertToDB() {
   let connection = mysql.createConnection(configuration);
-  const files = fs.readdirSync(`${basePath}/data`);
+  const dataFiles = fs.readdirSync(`${basePath}/data`);
+  const queryFiles = fs.readdirSync(`${basePath}/query`);
   connection.connect();
+  connection.beginTransaction(err => {
+    if (err) throw err;
+    queryFiles.forEach(file => {
+      if (file.endsWith(".query")) {
+        let query = fs.readFileSync(`${basePath}/query/${file}`);
+        connection.query(query, function(error, rows, fields) {
+          if (error) {
+            console.log("Error for query : ", query2);
+            throw error;
+          }
+          // console.log(rows);
+        });
+      }
+    });
+
+    connection.commit(err => {
+      connection.rollback(() => {
+        throw err;
+      });
+    });
+  });
   connection.beginTransaction(error => {
     if (error) throw error;
-    files.forEach(file => {
+    dataFiles.forEach(file => {
       if (file.endsWith(".json")) {
         let rawData = fs.readFileSync(`${basePath}/data/${file}`);
         let jsonObject = JSON.parse(rawData);
