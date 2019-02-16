@@ -51,7 +51,7 @@ function insertToDB() {
           } else if (d && d["type"] && d["type"] === "Buffer") {
             // console.log(query2)
             query2 += `b'${item[col]["data"][0]}' ,`;
-          } else query2 += `'${d}' ,`;
+          } else query2 += `\'${formatString(d)}\' ,`;
         });
         query2 = query2.slice(0, -1);
         query2 += `) ;`;
