@@ -25,25 +25,27 @@ function insertToDB() {
   const dataFiles = fs.readdirSync(`${basePath}/data`);
   const queryFiles = fs.readdirSync(`${basePath}/query`);
   connection.connect();
-  connection.beginTransaction(err => {
+  connection.beginTransaction(function(err) {
     if (err) throw err;
     queryFiles.forEach(file => {
-      if (file.endsWith(".query")) {
-        let query = fs.readFileSync(`${basePath}/query/${file}`);
+      if (file.endsWith(".sql")) {
+        let query = fs
+          .readFileSync(`${basePath}/query/${file}`, "utf-8")
+          .toString("utf-8");
         connection.query(query, function(error, rows, fields) {
           if (error) {
             console.log("Error for query : ", query2);
             throw error;
           }
-          // console.log(rows);
         });
       }
     });
-
     connection.commit(err => {
-      connection.rollback(() => {
-        throw err;
-      });
+      if (err) {
+        connection.rollback(() => {
+          throw err;
+        });
+      }
     });
   });
   connection.beginTransaction(error => {
