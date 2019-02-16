@@ -13,6 +13,16 @@ rl.question("Enter Database Password : \n", answer => {
   rl.close();
   insertToDB();
 });
+function formatString(mystring) {
+  // console.log(typeof mystring);
+  return typeof mystring !== "string"
+    ? mystring
+    : mystring
+        .replace(/&/g, "&amp;")
+        .replace(/>/g, "&gt;")
+        .replace(/</g, "&lt;")
+        .replace(/"/g, "&quot;");
+}
 // configuration.password = password;
 function insertToDB() {
   let connection = mysql.createConnection(configuration);
