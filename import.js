@@ -57,8 +57,11 @@ function insertToDB() {
         query2 += `) ;`;
         // console.log(query2);
         connection.query(query2, function(error, rows, fields) {
-          if (error) throw error;
-          console.log(rows);
+          if (error) {
+            console.log("Error for query : ", query2);
+            throw error;
+          }
+          // console.log(rows);
         });
       });
     }
