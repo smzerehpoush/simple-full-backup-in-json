@@ -36,15 +36,18 @@ function insertToDB() {
         0,
         file.indexOf(".json")
       )}\` (`;
-      const colmuns = [];
-      if (jsonObject.length > 1)
-        Object.keys(jsonObject[0]).forEach(col => colmuns.push(col));
-      colmuns.forEach(col => (query += `\`${col}\` ,`));
-      query = query.slice(0, -1);
-      query += `) \n`;
-      query += "VALUES (";
+
       jsonObject.forEach(item => {
+        const colmuns = [];
         let query2 = query;
+        Object.keys(item).forEach(col => {
+          if (item[col] !== null) colmuns.push(col);
+        });
+        colmuns.forEach(col => (query2 += `\`${col}\` ,`));
+        query2 = query2.slice(0, -1);
+        query2 += `) `;
+        query2 += "VALUES (";
+
         colmuns.forEach(col => {
           let d = item[col];
 
