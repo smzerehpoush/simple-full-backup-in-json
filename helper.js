@@ -1,3 +1,7 @@
+const configuration = {
+  mainDirectory: "db-backup"
+};
+
 function getArgs() {
   const args = {};
   for (let i = 2; i < process.argv.length - 1; i++) {
@@ -12,7 +16,8 @@ function getArgs() {
   }
   return args;
 }
-export function parseArgs() {
+
+function parseArgs() {
   const args = getArgs();
   Object.keys(args).forEach(arg => {
     switch (arg) {
@@ -29,4 +34,6 @@ export function parseArgs() {
         break;
     }
   });
+  return configuration;
 }
+module.exports = parseArgs;
